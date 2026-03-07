@@ -1,6 +1,9 @@
- import React, { useState } from 'react'
- import {createUserWithEmailAndPassword} from 'firebase/auth'
+import React, { useState } from 'react'
+import { createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword } from 'firebase/auth'
 import { _Auth } from '../../../../Backend/BackEndBaaS'
+import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
+import { FaEye, FaEyeSlash } from "react-icons/fa"
 
 const Register = () => {
 
@@ -11,46 +14,72 @@ const Register = () => {
     confirmPassword: ''
   })
 
-  function handlingData(e){
-    const {name,value} = e.target
+  //& show password 
+  const [showPassword, setShowPassword] = useState(false)
+
+  let bhootni = useNavigate()
+
+  function handlingData(e) {
+    const { name, value } = e.target
     setUserData({
       ...userData,
       [name]: value
     })
   }
-   
-//& handle submit
-  async function handleSubmit(e){
-  e.preventDefault()
-  let {email,password}=userData
 
-  let Firedata= await createUserWithEmailAndPassword(_Auth,userData.email,userData.password )
-  console.log(Firedata)
+  //& handle submit
+  async function handleSubmit(e) {
+    e.preventDefault()
+    let { email, password } = userData
+    try {
+      if (userData.password === userData.confirmPassword) {
 
-  
+        let Firedata = await createUserWithEmailAndPassword(_Auth, email, password)
+        console.log(Firedata)
 
-  alert("Registration successful")
-  setUserData({
-      name:'',
-      email:'',
-      password:'',
-      confirmPassword:''
-    })
-  console.log(userData)
-}
+        let verify = await sendEmailVerification(Firedata.user)
+        console.log(verify);
 
-  function resetForm(){
+        toast.success('sent succesfully')
+        bhootni('/login')
+
+      }
+
+    } catch (error) {
+      console.log(error)
+      toast.error('error')
+
+      //& clear password 
+      setUserData({
+        ...userData,
+        password:""
+      })
+    }
+
+
+
+
     setUserData({
-      name:'',
-      email:'',
-      password:'',
-      confirmPassword:''
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    })
+    console.log(userData)
+  }
+
+  function resetForm() {
+    setUserData({
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
     })
   }
 
   return (
-     <section className="w-full min-h-screen flex items-center justify-center bg-gray-100">
- 
+    <section className="w-full min-h-screen flex items-center justify-center bg-gray-100">
+
       <div className="w-[380px] bg-white p-8 rounded-xl shadow-lg">
 
         <h1 className="text-2xl font-bold text-center mb-6">Register</h1>
@@ -60,14 +89,16 @@ const Register = () => {
           <div>
             <label className="text-sm font-medium">Username</label>
             <input
-              type="text"
+              type='text'
               name="name"
               value={userData.name}
               onChange={handlingData}
-              
+
               placeholder="Enter username"
               className="w-full mt-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
+
+
           </div>
 
           <div>
@@ -82,19 +113,27 @@ const Register = () => {
             />
           </div>
 
-          <div>
+          <div className="relative">
             <label className="text-sm font-medium">Password</label>
+
             <input
-              type="password"
-              
+              type={showPassword ? "text" : "password"}
+              minLength={6}
               name="password"
               value={userData.password}
               onChange={handlingData}
               placeholder="Enter password"
               className="w-full mt-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
-          </div>
 
+            <span
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-9 cursor-pointer text-gray-500"
+            >
+              {showPassword ?  <FaEye /> :<FaEye /> }
+            </span>
+          </div>
+ 
           <div>
             <label className="text-sm font-medium">Confirm Password</label>
             <input
