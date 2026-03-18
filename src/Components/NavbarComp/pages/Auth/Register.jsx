@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword } from 'firebase/auth'
 import { _Auth } from '../../../../Backend/BackEndBaaS'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import { FaEye, FaEyeSlash } from "react-icons/fa"
+import { authUser } from '../../../../context/AuthUserContext'
+import { updateProfile } from 'firebase/auth'
 
 const Register = () => {
 
@@ -18,6 +20,10 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false)
 
   let bhootni = useNavigate()
+
+  let dataa=useContext(authUser)
+  console.log(dataa);
+  
 
   function handlingData(e) {
     const { name, value } = e.target
@@ -36,6 +42,13 @@ const Register = () => {
 
         let Firedata = await createUserWithEmailAndPassword(_Auth, email, password)
         console.log(Firedata)
+
+        await updateProfile(Firedata.user, {
+          displayName:  userData.name,
+        }); 
+
+        await Firedata.user.reload();
+
 
         let verify = await sendEmailVerification(Firedata.user)
         console.log(verify);
