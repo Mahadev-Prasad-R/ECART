@@ -5,12 +5,14 @@ import App from './App.jsx'
 import { RouterProvider } from 'react-router-dom'
 import { myMap } from './Map/MyMap.jsx'
 import AuthUserContext from './context/AuthUserContext.jsx'
+import CartProvider from './context/CartContext.jsx'
 
 createRoot(document.getElementById('root')).render(
  
       <AuthUserContext>
-          <RouterProvider router={myMap}/>
-
+          <CartProvider>
+              <RouterProvider router={myMap}/>
+          </CartProvider>
       </AuthUserContext>
       
  

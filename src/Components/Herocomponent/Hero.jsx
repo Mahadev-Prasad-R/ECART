@@ -10,6 +10,7 @@ const Hero = () => {
     return (
         <>
             <Swiper modules={[Navigation, Pagination, Scrollbar,Autoplay]}
+                    className="w-full h-[60vh]"
                     // navigation
                     pagination={{clickable:true}}
                     scrollbar={{ draggable: true }}
@@ -23,18 +24,18 @@ const Hero = () => {
 
                 <SwiperSlide>
                     <img 
-                    className='w-[100%] h-[60vh]'
-                    src='https://ebz-static.s3.ap-south-1.amazonaws.com/easebuzz-static/upi-credit-cards-v1.png'/>
+                    className='w-full h-full object-cover object-center'
+                    src='https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?q=80&w=2070&auto=format&fit=crop'/>
                 </SwiperSlide>
                 <SwiperSlide>
                     <img 
-                    className='w-[100%] h-[60vh]'
-                    src='https://acouriertracking.com/wp-content/uploads/2025/06/courier-tracking-1.webp'/>
+                    className='w-full h-full object-cover object-center'
+                    src='https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070&auto=format&fit=crop'/>
                 </SwiperSlide>
                 <SwiperSlide>
                     <img 
-                    className='w-[100%] h-[60vh]'
-                    src='https://www.saffiretech.com/wp-content/uploads/2024/12/features-image-optimized.png'/>
+                    className='w-full h-full object-cover object-center'
+                    src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2070&auto=format&fit=crop'/>
                 </SwiperSlide>
                 
             </Swiper>

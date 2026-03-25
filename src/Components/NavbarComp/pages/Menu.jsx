@@ -1,70 +1,88 @@
- import React, { useContext, useEffect, useState } from 'react'
-import { Link ,NavLink} from 'react-router-dom'
+import React, { useContext, useEffect, useState } from 'react'
+import { Link, NavLink } from 'react-router-dom'
 import { CiSearch } from "react-icons/ci";
 import { authUser } from '../../../context/AuthUserContext';
 import { signOut } from 'firebase/auth';
 import { _Auth } from '../../../Backend/BackEndBaaS';
- import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { FaShoppingCart } from "react-icons/fa";
+import { myCart } from '../../../context/CartContext.jsx';
 
-const Menu = ({search,setSearch}) => {
-  let dataa=useContext(authUser)
-    console.log(dataa);
+const Menu = ({ search, setSearch }) => {
+  let dataa = useContext(authUser)
+  const { cart } = useContext(myCart);
+  const totalItems = cart?.length || 0;
+  console.log(dataa);
 
-     
 
-const navigate = useNavigate();
 
-const logout = async () => {
-  try {
-    await signOut(_Auth);
-    navigate("/login"); // redirect
-    toast.success("Logged out successfully");
-  } catch (err) {
-    console.log(err);
+  const navigate = useNavigate();
+
+  const logout = async () => {
+    try {
+      await signOut(_Auth);
+      navigate("/login"); // redirect
+      toast.success("Logged out successfully");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    setSearch(search)
+  }, [])
+
+  function valid() {
+    return (
+      <div className="flex items-center gap-4">
+
+        <section className='flex gap-2 items-center'>
+          <img
+            src={
+              dataa?.photoURL ||
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXUVPxK4e801-pumovRg0koRNu25ON_y6Fy0rIZnP2MsmTfUXQawW7_eI&s"
+            }
+            alt="profile"
+            className="w-7 h-7 rounded-full"
+          />
+          <p className='text-white'>
+            {dataa?.displayName || "User"}
+          </p>
+
+        </section>
+
+        <NavLink
+          to="/cart"
+          className={({ isActive }) => {
+            return isActive ? "text-cyan-400 relative flex items-center" : "text-gray-300 relative flex items-center";
+          }}
+        >
+          <FaShoppingCart className="text-xl" />
+          {totalItems > 0 && (
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+              {totalItems}
+            </span>
+          )}
+        </NavLink>
+
+        <button
+          onClick={logout}
+          className='text-white cursor-pointer hover:text-red-400'
+        >
+          Logout
+        </button>
+
+      </div>
+    );
   }
-};
 
-  useEffect(()=>{
-setSearch(search)
-  },[])
-
- function valid() {
-  return (
-    <div className="flex items-center gap-4">
-      
-      <section className='flex gap-2 items-center'>
-        <img
-          src={
-            dataa?.photoURL ||
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXUVPxK4e801-pumovRg0koRNu25ON_y6Fy0rIZnP2MsmTfUXQawW7_eI&s"
-          }
-          alt="profile"
-          className="w-7 h-7 rounded-full"
-        />
-        <p className='text-white'>
-  {dataa?.displayName || "User"}
-</p>
- 
-      </section>
-
-      <button
-        onClick={logout}
-        className='text-white cursor-pointer hover:text-red-400'
-      >
-        Logout
-      </button>
-      
-    </div>
-  );
-}
-
-  function invalid(){
-    return(
+  function invalid() {
+    return (
       <>
-      <NavLink className={({isActive})=>
-      isActive?"text-cyan-400 underline":"text-gray-300"}to="/login">Login</NavLink>
-      <NavLink className={({isActive})=>
-      isActive?"text-cyan-400 underline":"text-gray-300"}to="/register">Register</NavLink>
+        <NavLink className={({ isActive }) =>
+          isActive ? "text-cyan-400 underline" : "text-gray-300"} to="/login">Login</NavLink>
+        <NavLink className={({ isActive }) =>
+          isActive ? "text-cyan-400 underline" : "text-gray-300"} to="/register">Register</NavLink>
       </>
     )
   }
@@ -79,29 +97,29 @@ setSearch(search)
           type="text"
           placeholder="Search"
           className="pl-8 pr-4 py-1 rounded-md text-sm border focus:outline-none focus:ring-2 focus:ring-blue-600"
-        value={search}
-        onChange={(e)=>setSearch(e.target.value)}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
       </form>
 
       <NavLink
-to="/"
-  className={({ isActive }) => {
-    return isActive ? "text-cyan-400 underline": "text-gray-300";
-  }}
->
-  Home
-</NavLink>
-       
-          {
-            //  dataa?.emailVerified===true?valid():invalid()
-            dataa?valid():invalid()
-          }
-            
-          
+        to="/"
+        className={({ isActive }) => {
+          return isActive ? "text-cyan-400 underline" : "text-gray-300";
+        }}
+      >
+        Home
+      </NavLink>
+
+      {
+        //  dataa?.emailVerified===true?valid():invalid()
+        dataa ? valid() : invalid()
+      }
+
+
     </div>
 
-     
+
   )
 }
 

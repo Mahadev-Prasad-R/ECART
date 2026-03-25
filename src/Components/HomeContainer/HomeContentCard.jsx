@@ -1,9 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
-const HomeContentCard = ({title, imageUrl,price,description,id}) => {
+const HomeContentCard = ({ title, imageUrl, price, description, id }) => {
+
+
   return (
-    <div className='w-[280px] h-[380px] flex flex-col  justify-center bg-gray-800 text-white rounded-md p-4'>
+    <div className='w-[280px] h-[350px] flex flex-col  justify-center bg-gray-800 text-white rounded-md p-4'>
 
       {/* Image Center */}
       <div className="flex justify-center">
@@ -15,23 +18,28 @@ const HomeContentCard = ({title, imageUrl,price,description,id}) => {
       </div>
 
       <h3 className='text-lg font-bold mt-2 text-center'>
-        {title.slice(0,20)}
+        {title.slice(0, 20)}
       </h3>
 
       <p className="text-lg font-bold text-white-400 mt-1 text-center text-amber-300">
-  ₹{price*90}
-</p>
-<p>{description.slice(0,80)}</p>
+        ₹{price * 90}
+      </p>
+      <p>{description.slice(0, 80)}</p>
 
-        <Link to={`/productDetails/${id}`}>
-        <div  className='flex justify-center'>
-         <button className="px-4 py-1 border border-blue-600 text-blue-600 mt-4
+      <Link to={`/productDetails/${id}`}>
+        <div className='flex justify-center'>
+          <button className="px-4 py-1 border border-blue-600 text-blue-600 mt-4
 cursor-pointer rounded-md text-sm hover:bg-blue-600 hover:text-white
 hover:scale-110 duration-100 ease-in">
-View Info
-</button>
-       </div>
-        </Link>
+            View Info
+          </button>
+        </div>
+      </Link>
+
+      <div className="flex justify-center">
+
+      </div>
+
     </div>
   )
 }

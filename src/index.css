@@ -13,22 +13,6 @@
         } */
 
         .loader {
-  position: fixed;   /* breaks out of container */
-  top: 0;
-  left: 0;
-
-  width: 100vw;      /* full screen width */
-  height: 100vh;     /* full screen height */
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  background: rgba(0, 0, 0, 0.85);
-  z-index: 9999;
-}
-
-.box {
   position: relative;
   width: 120px;
   height: 90px;

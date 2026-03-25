@@ -3,7 +3,7 @@ import React from 'react'
 const Logo = () => {
   return (
      <div className="leftNav">
-        <h1 className='text-2xl font-bold'>Logo</h1>
+        <img className='w-18 h-18' src="https://i.pinimg.com/736x/45/e7/83/45e783764685da097565a7fdb72cd29c.jpg" alt="" />
       </div>
   )
 }
