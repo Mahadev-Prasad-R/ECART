@@ -1,15 +1,39 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import toast from 'react-hot-toast'
+import { myWishlist } from '../../context/WishlistContext'
+import { FiHeart } from 'react-icons/fi'
 
-const HomeContentCard = ({ title, imageUrl, price, description, id }) => {
+const HomeContentCard = ({ title, imageUrl, price, description, id, category, rating }) => {
+  const { wishlist, addWishlist, removeWishlist } = useContext(myWishlist);
+  const isWishlisted = wishlist.some(item => item.id === id);
 
+  const toggleWishlist = () => {
+    if (isWishlisted) {
+      removeWishlist(id);
+      toast.success("Removed from wishlist");
+    } else {
+      addWishlist({ id, title, image: imageUrl, imageUrl, price, description, category, rating });
+      toast.success("Added to wishlist");
+    }
+  };
 
   return (
-    <div className='w-[280px] h-[350px] flex flex-col  justify-center bg-gray-800 text-white rounded-md p-4'>
+    <div className='w-[280px] h-[350px] flex flex-col relative justify-center bg-gray-800 text-white rounded-md p-4 group'>
+      
+      {/* Wishlist Button */}
+      <button 
+        onClick={toggleWishlist}
+        className='absolute top-3 right-3 p-2 rounded-full bg-gray-700 hover:bg-gray-600 transition-colors z-10'
+      >
+        <FiHeart 
+          size={20} 
+          className={`transition-colors ${isWishlisted ? 'fill-red-500 text-red-500' : 'text-gray-300 group-hover:text-white'}`} 
+        />
+      </button>
 
       {/* Image Center */}
-      <div className="flex justify-center">
+      <div className="flex justify-center mt-2">
         <img
           className='w-[150px] h-[150px] object-contain'
           src={imageUrl}

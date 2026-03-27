@@ -7,6 +7,7 @@ import Register from '../Components/NavbarComp/pages/Auth/Register'
 import Home from '../Components/HomeContainer/Home'
 import ProductDetails from '../Components/HomeContainer/ProductDetails'
 import Cart from '../Components/Cart/Cart'
+import Wishlist from '../Components/wishlist/Wishlist'
 
 export let myMap = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ export let myMap = createBrowserRouter([
       {
         path: 'register',
         element: <Register />
+      },
+      {
+        path: 'wishlist',
+        element: <Wishlist />
       }
     ]
   }

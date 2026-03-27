@@ -7,11 +7,15 @@ import { _Auth } from '../../../Backend/BackEndBaaS';
 import { useNavigate } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
 import { myCart } from '../../../context/CartContext.jsx';
+import { myWishlist } from '../../../context/WishlistContext.jsx';
+import { FiHeart } from "react-icons/fi";
 
 const Menu = ({ search, setSearch }) => {
   let dataa = useContext(authUser)
   const { cart } = useContext(myCart);
+  const { wishlist } = useContext(myWishlist);
   const totalItems = cart?.length || 0;
+  const totalWishlistItems = wishlist?.length || 0;
   console.log(dataa);
 
 
@@ -52,9 +56,23 @@ const Menu = ({ search, setSearch }) => {
         </section>
 
         <NavLink
+          to="/wishlist"
+          className={({ isActive }) => {
+            return isActive ? "text-cyan-400 relative flex items-center" : "text-gray-300 hover:text-white transition-colors relative flex items-center";
+          }}
+        >
+          <FiHeart className="text-xl" />
+          {totalWishlistItems > 0 && (
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+              {totalWishlistItems}
+            </span>
+          )}
+        </NavLink>
+
+        <NavLink
           to="/cart"
           className={({ isActive }) => {
-            return isActive ? "text-cyan-400 relative flex items-center" : "text-gray-300 relative flex items-center";
+            return isActive ? "text-cyan-400 relative flex items-center" : "text-gray-300 hover:text-white transition-colors relative flex items-center";
           }}
         >
           <FaShoppingCart className="text-xl" />
@@ -88,21 +106,22 @@ const Menu = ({ search, setSearch }) => {
   }
 
   return (
-    <div className="rightNav flex gap-6 items-center">
+    <div className="rightNav flex flex-wrap gap-4 md:gap-6 items-center flex-1 justify-end">
 
-      <form className="relative">
-        <CiSearch className="absolute left-2 top-2 text-gray-500" />
+      <form className="relative flex-1 min-w-[120px] max-w-sm">
+        <CiSearch className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500" />
 
         <input
           type="text"
           placeholder="Search"
-          className="pl-8 pr-4 py-1 rounded-md text-sm border focus:outline-none focus:ring-2 focus:ring-blue-600"
+          className="w-full pl-8 pr-4 py-1.5 rounded-md text-sm text-gray-900 border focus:outline-none focus:ring-2 focus:ring-blue-600 bg-white"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </form>
 
-      <NavLink
+      <div className="flex items-center gap-4 md:gap-6">
+        <NavLink
         to="/"
         className={({ isActive }) => {
           return isActive ? "text-cyan-400 underline" : "text-gray-300";
@@ -112,11 +131,10 @@ const Menu = ({ search, setSearch }) => {
       </NavLink>
 
       {
-        //  dataa?.emailVerified===true?valid():invalid()
         dataa ? valid() : invalid()
       }
 
-
+      </div>
     </div>
 
 
